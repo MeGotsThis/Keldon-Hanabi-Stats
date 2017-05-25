@@ -37,9 +37,15 @@ CREATE VIEW IF NOT EXISTS players(
 SELECT
     DISTINCT player
     FROM game_players''']
-    for q in queries:
-        connection.execute(q)
-    connection.commit()
+    q = None
+    try:
+        for q in queries:
+            connection.execute(q)
+        connection.commit()
+    except sqlite3.Error:
+        print('Error query:')
+        print(q)
+        raise
 
 
 def game_record_exists(connection, id):
